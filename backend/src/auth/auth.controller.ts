@@ -1,7 +1,9 @@
-import { Controller,Post,UnauthorizedException,Body } from '@nestjs/common';
+import { Controller,Post,UnauthorizedException,Body,Delete,Get,UseGuards,Request} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { BSON } from 'typeorm';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UsersService } from '../users/users.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { JwtRefreshGuard } from 'src/common/guards/jwt_refresh.guard';
+
 
 @Controller('auth')
 export class AuthController {
@@ -19,19 +21,39 @@ export class AuthController {
 
     @Post('register')
     async register(@Body() createUserDto: CreateUserDto) {
+        if (!createUserDto.username || !createUserDto.password) {
+            throw new UnauthorizedException('Username and password are required');
+        }
+        if (await this.usersService.findByUsername(createUserDto.username)) {
+            throw new UnauthorizedException('Username already exists');
+        }
         const user = await this.usersService.create(createUserDto);
         if (!user) {
             throw new UnauthorizedException();
         }
-        return user;
+        const tokens = await this.authService.login(user);
+        return tokens;
     }
-
-    @Post('refresh')
-    async refresh(@Body('refreshToken') refreshToken: string) {
-        const tokens = await this.authService.refresh(refreshToken);
+    @UseGuards(JwtRefreshGuard)
+    @Get('refresh')
+    async refresh(@Request() req) {
+        const tokens = await this.authService.refreshTokens(req.user.id);
         if (!tokens) {
             throw new UnauthorizedException();
         }
         return tokens;
+    }
+
+    @Delete('logout')
+    async logout(@Request() req) {
+        const accessToken = req.headers.authorization?.split(' ')[1];
+        if (!accessToken) {
+            throw new UnauthorizedException('Access token is required');
+        }
+        const user_id = await this.usersService.findId(accessToken);
+        await this.authService.logout(accessToken);
+        return {
+            "message": "logout done"
+        }
     }
 }
