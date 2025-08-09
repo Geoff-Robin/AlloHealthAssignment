@@ -30,8 +30,8 @@ export class UsersService {
     return user?.refreshToken ?? null;
   }
 
-  async findOne(id: number): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where: { id: BigInt(id) } });
+  async findOne(id: BigInt): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ where: { id } });
     return user ?? undefined;
   }
 
