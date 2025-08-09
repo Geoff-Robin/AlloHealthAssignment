@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DoctorModule } from './doctor/doctor.module';
 import { PatientsModule } from './patients/patients.module';
-import { PatientsModule } from './patients/patients.module';
 
 @Module({
   imports: [
