@@ -6,17 +6,14 @@ export class Patient {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ length: 100 })
   name: string;
 
-  @Column({ nullable: true })
-  email: string;
-
-  @Column({ nullable: true })
+  @Column({ length: 10 })
   gender: string;
 
-  @Column({ type: 'date', nullable: true })
-  dateOfBirth: Date;
+  @Column({ length: 20 })
+  dateOfBirth: string; 
 
   @OneToMany(() => Appointment, appointment => appointment.patient)
   appointments: Appointment[];
