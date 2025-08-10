@@ -1,5 +1,4 @@
 import { IsString, MinLength, MaxLength, IsEnum} from 'class-validator';
-import { UserRole } from '../entities/user.entity';
 
 export class CreateUserDto {
   @IsString()
@@ -15,7 +14,4 @@ export class CreateUserDto {
   @MinLength(2)
   @MaxLength(100)
   email: string;
-
-  @IsEnum(UserRole)
-  role: UserRole;
 }
