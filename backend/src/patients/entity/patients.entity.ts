@@ -12,8 +12,8 @@ export class Patient {
   @Column({ length: 10 })
   gender: string;
 
-  @Column({ length: 20 })
-  dateOfBirth: string; 
+  @Column({ length: 15 })
+  phone: string;
 
   @OneToMany(() => Appointment, appointment => appointment.patient)
   appointments: Appointment[];

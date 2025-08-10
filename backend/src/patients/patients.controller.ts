@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Delete, Param, Body, NotFoundException, ParseIntPipe } from '@nestjs/common';
 import { PatientService } from './patients.service';
+import { JwtAuthGuard } from 'src/common/guards/jwt_auth.guard';
 import { CreatePatientDto } from './dto/create-patient.dto';
 
 @Controller('patient')

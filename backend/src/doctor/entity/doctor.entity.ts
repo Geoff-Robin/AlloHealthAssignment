@@ -15,15 +15,12 @@ export class Doctor {
   @Column({ length: 10 })
   gender: string;
 
-  @Column({ type: 'time' })
-  startTime: string;
+  @Column({ length: 10 })
+  startTime: string; // HH:mm format
 
-  @Column({ type: 'time' })
-  endTime: string;
+  @Column({ length: 10 })
+  endTime: string; // HH:mm format
 
-  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  @OneToMany(() => Appointment, appointment => appointment.doctor)
   appointments: Appointment[];
 }
-
-
-

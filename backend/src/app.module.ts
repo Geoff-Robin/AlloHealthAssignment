@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DoctorModule } from './doctor/doctor.module';
 import { PatientsModule } from './patients/patients.module';
+import { AppointmentModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -21,17 +22,18 @@ import { PatientsModule } from './patients/patients.module';
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_DATABASE'),
-        entities: [__dirname + '/**/*.entity.js'],
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/**/*.js'],
         synchronize: true,
+      }),
     }),
-    }),
-UsersModule,
-  AuthModule,
-  DoctorModule,
-  PatientsModule,
+    UsersModule,
+    AuthModule,
+    DoctorModule,
+    PatientsModule,
+    AppointmentModule,
   ],
-controllers: [AppController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule { }
